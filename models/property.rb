@@ -84,4 +84,29 @@ class Property
     return properties.map { |property_hash| Property.new(property_hash)}
   end
 
+  def Property.find(id)
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql = "SELECT * FROM properties WHERE id = $1;"
+    values = [id]
+    db.prepare("find_by_id", sql)
+    found_property = db.exec_prepared("find_by_id", values)
+    db.close()
+    return found_property.map { |property_hash| Property.new(property_hash)}
+  end
+
+  def Property.find_by_address(address)
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql = "SELECT * FROM properties WHERE address = $1;"
+    values = [address]
+    db.prepare("find_by_address", sql)
+    found_property = db.exec_prepared("find_by_address", values)
+    db.close()
+    found_prop_array = found_property.map { |property_hash| Property.new(property_hash)}
+    if found_prop_array == []
+      return nil
+    else
+      return found_prop_array
+    end
+  end
+
 end

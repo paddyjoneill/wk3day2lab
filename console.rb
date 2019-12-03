@@ -2,7 +2,7 @@ require ('pry')
 require_relative('models/property.rb')
 
 property1 = Property.new({
-  'address' => "1 Main St, Edinburgh, EH1 1AA",
+  'address' => "1 Main St",
   'price' => 200000,
   'bedrooms' => 4,
   'year_built' => 1900,
