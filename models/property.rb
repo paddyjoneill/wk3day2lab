@@ -37,5 +37,33 @@ class Property
     db.close()
   end
 
+  def update ()
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql = "
+      UPDATE properties SET(
+        address,
+        price,
+        bedrooms,
+        year_built,
+        buy_let,
+        square_footage,
+        building_type
+        ) = (
+          $1, $2, $3, $4, $5, $6, $7
+        ) WHERE id = $8;
+      "
+    values = [@address, @price, @bedrooms, @year_built, @buy_let, @square_footage, @building_type, @id]
+    db.prepare("update", sql)
+    db.exec_prepared("update", values)
+    db.close()
+  end
+
+  def Property.delete_all()
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql = "DELETE FROM properties"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
+  end
 
 end
