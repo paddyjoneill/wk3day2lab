@@ -60,10 +60,28 @@ class Property
 
   def Property.delete_all()
     db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
-    sql = "DELETE FROM properties"
+    sql = "DELETE FROM properties;"
     db.prepare("delete_all", sql)
     db.exec_prepared("delete_all")
     db.close()
+  end
+
+  def delete()
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql ="DELETE FROM properties WHERE id = $1;"
+    values = [@id]
+    db.prepare("delete_one", sql)
+    db.exec_prepared("delete_one", values)
+    db.close()
+  end
+
+  def Property.all()
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql = "SELECT * FROM properties;"
+    db.prepare("all", sql)
+    properties = db.exec_prepared("all")
+    db.close()
+    return properties.map { |property_hash| Property.new(property_hash)}
   end
 
 end
