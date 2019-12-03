@@ -17,5 +17,25 @@ class Property
 
   end
 
+  def save()
+    db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+    sql =
+      "
+      INSERT INTO properties (
+        address,
+        price,
+        bedrooms,
+        year_built,
+        buy_let,
+        square_footage,
+        building_type
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;
+        "
+        values = [@address, @price, @bedrooms, @year_built, @buy_let, @square_footage, @building_type]
+    db.prepare("save", sql)
+    @id = db.exec_prepared("save", values)[0]['id'].to_i()
+    db.close()
+  end
+
 
 end

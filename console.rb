@@ -40,3 +40,11 @@ property4 = Property.new({
   'square_footage' => 150000,
   'building_type' => "mansion"
   })
+
+property1.save
+property2.save
+property3.save
+property4.save
+
+binding.pry
+nil
